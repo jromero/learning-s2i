@@ -1,10 +1,24 @@
-IMAGE_NAME = s2i-golang
+BUILDER_IMAGE=s2i-golang
+RUNTIME_IMAGE=s2i-golang-runtime
+APP_IMAGE=my-go-app
+
+.PHONY: builder
+builder:
+	docker build -t $(BUILDER_IMAGE) ./builder
+
+.PHONY: runtime
+runtime:
+	docker build -t $(RUNTIME_IMAGE) ./runtime
 
 .PHONY: build
-build:
-	docker build -t $(IMAGE_NAME) .
+build: builder runtime
 
-.PHONY: test
-test:
-	docker build -t $(IMAGE_NAME)-candidate .
-	IMAGE_NAME=$(IMAGE_NAME)-candidate test/run
+.PHONY: test-builder
+test-builder: builder
+	s2i build --copy test-app/ $(BUILDER_IMAGE) $(APP_IMAGE)
+	docker run --rm -it -p 8080:8080 $(APP_IMAGE) --incremental
+
+.PHONY: test-with-runtime
+test-with-runtime: builder runtime
+	s2i build --copy test-app/ $(BUILDER_IMAGE) $(APP_IMAGE) --runtime-image $(RUNTIME_IMAGE) --runtime-artifact /opt/app-root/bin/app
+	docker run --rm -it -p 8080:8080 $(APP_IMAGE)

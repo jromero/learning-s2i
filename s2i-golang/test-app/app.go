@@ -12,10 +12,10 @@ import (
 const port = "8080"
 
 func main() {
-	log.Println("Starting app on port: ", port)
+	log.Println("Starting app on port:", port)
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = fmt.Fprint(w, "This is a test app!")
+		_, _ = fmt.Fprintln(w, "This is a test app!")
 	})
 	r.HandleFunc("/host", func(w http.ResponseWriter, r *http.Request) {
 		var name, _ = os.Hostname()

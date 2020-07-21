@@ -2,7 +2,8 @@
 FROM openshift/base-centos7
 
 # the maintainer
-LABEL maintainer="Javier Romero <root@jromero.codes>"
+LABEL maintainer="Javier Romero <root@jromero.codes>" \
+      io.openshift.s2i.scripts-url="image:///usr/libexec/s2i/bin"
 
 # configuration
 ARG GO_VERSION=1.14
@@ -21,10 +22,11 @@ RUN curl -sSL https://dl.google.com/go/go1.14.linux-amd64.tar.gz -o go${GO_VERSI
     mkdir -p ${GOPATH}
 
 # copy the S2I scripts to /usr/libexec/s2i
-COPY ./s2i/bin/ /usr/libexec/s2i
+COPY s2i /usr/libexec/s2i
 
 # set permissions
-RUN chown -R 1001:1001 ${APP_ROOT}
+RUN chown -R 1001:1001 ${APP_ROOT} && \
+    chown -R 1001:1001 /usr/libexec/s2i
 
 # default user
 USER 1001
