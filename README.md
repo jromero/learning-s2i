@@ -86,3 +86,5 @@ vorburger-cnb                             latest                                
 - Doesn't download source via `git`.
 - Cache (incremental build) works by default.
 - Source is not present in final runtime image only the compiled classes (see [screenshot](resources/cnb-runimage-classes.png)).
+- Pulling scaffold builder base image `openshift/base-centos7` yields: 
+    > Image docker.io/openshift/base-centos7:latest uses outdated schema1 manifest format. Please upgrade to a schema2 image for better future compatibility. More information at https://docs.docker.com/registry/spec/deprecated-schema-v1/
