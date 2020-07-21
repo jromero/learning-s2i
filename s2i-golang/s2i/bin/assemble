@@ -14,15 +14,32 @@ fi
 
 # Restore artifacts from the previous build (if they exist).
 #
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-  echo "---> Restoring build artifacts..."
+echo
+echo "---> Checking for cache..."
+if [ "$(ls /tmp/artifacts 2>/dev/null)" ]; then
+  pushd /tmp/artifacts >/dev/null
+  echo "-----> Pulling cache..."
   shopt -s dotglob
-  mv /tmp/artifacts/* ./
+  if [ -d src ]; then
+    echo "Installing src/..."
+    mv src ${GOPATH}/src
+  fi
+  if [ -d pkg ]; then
+    echo "Installing pkg/..."
+    mv pkg ${GOPATH}/pkg 
+  fi
   shopt -u dotglob
+  popd >/dev/null
 fi
 
-echo "---> Installing application source..."
-cp -Rf /tmp/src/. ./
+SRC_DIR=${HOME}/src
 
+echo
+echo "---> Installing application source..."
+cp -Rf /tmp/src/. ${SRC_DIR}
+
+echo
 echo "---> Building application from source..."
-go build app.go
+pushd ${SRC_DIR} >/dev/null
+go build -o ${APP_ROOT}/bin/app
+popd >/dev/null

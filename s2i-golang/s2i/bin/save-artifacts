@@ -8,3 +8,13 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 # tar cf - <list of files and folders>
+pushd ${GOPATH} >/dev/null
+if [ -d src ]; then
+    chmod -R +w src
+    tar cf - src
+fi
+if [ -d pkg ]; then
+    chmod -R +w pkg
+    tar cf - pkg
+fi
+popd >/dev/null

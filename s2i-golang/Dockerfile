@@ -5,13 +5,13 @@ FROM openshift/base-centos7
 LABEL maintainer="Javier Romero <root@jromero.codes>"
 
 # configuration
-ARG APP_ROOT=/opt/app-root
 ARG GO_VERSION=1.14
 ARG GO_INSTALL_DIR=/usr/local/
 
 # env vars
+ENV APP_ROOT=/opt/app-root
 ENV BUILDER_VERSION 1.0
-ENV GOPATH ${APP_ROOT}/go
+ENV GOPATH ${APP_ROOT}/src/go
 ENV PATH=${PATH}:${GOPATH}/bin:${GO_INSTALL_DIR}/go/bin
 
 # build dependencies
