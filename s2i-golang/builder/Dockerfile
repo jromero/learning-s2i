@@ -17,7 +17,7 @@ ENV GOPATH ${APP_ROOT}/src/go
 ENV PATH=${PATH}:${GOPATH}/bin:${GO_INSTALL_DIR}/go/bin
 
 # build dependencies
-RUN curl -sSL https://dl.google.com/go/go1.14.linux-amd64.tar.gz -o go${GO_VERSION}.linux-amd64.tar.gz && \
+RUN curl -sSL https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -o go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -C ${GO_INSTALL_DIR} -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
     rm -f go${GO_VERSION}.linux-amd64.tar.gz && \
     mkdir -p ${GOPATH}

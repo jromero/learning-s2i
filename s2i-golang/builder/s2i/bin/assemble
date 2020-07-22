@@ -13,7 +13,6 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 # Restore artifacts from the previous build (if they exist).
-#
 echo
 echo "---> Checking for cache..."
 if [ "$(ls /tmp/artifacts 2>/dev/null)" ]; then
@@ -21,25 +20,20 @@ if [ "$(ls /tmp/artifacts 2>/dev/null)" ]; then
   echo "-----> Pulling cache..."
   shopt -s dotglob
   if [ -d src ]; then
-    echo "Installing src/..."
+    echo "Restoring cache ${GOPATH}/src/..."
     mv src ${GOPATH}/src
   fi
   if [ -d pkg ]; then
-    echo "Installing pkg/..."
+    echo "Restoring cache ${GOPATH}/pkg/..."
     mv pkg ${GOPATH}/pkg 
   fi
   shopt -u dotglob
   popd >/dev/null
 fi
 
-SRC_DIR=${HOME}/src
-
-echo
-echo "---> Installing application source..."
-cp -Rf /tmp/src/. ${SRC_DIR}
-
+# Compile app to final location
 echo
 echo "---> Building application from source..."
-pushd ${SRC_DIR} >/dev/null
+pushd /tmp/src/ >/dev/null
 go build -o ${APP_ROOT}/bin/app
 popd >/dev/null
