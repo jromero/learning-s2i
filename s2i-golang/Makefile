@@ -15,8 +15,8 @@ build: builder runtime
 
 .PHONY: test-builder
 test-builder: builder
-	s2i build --copy test-app/ $(BUILDER_IMAGE) $(APP_IMAGE)
-	docker run --rm -it -p 8080:8080 $(APP_IMAGE) --incremental
+	s2i build --copy test-app/ $(BUILDER_IMAGE) $(APP_IMAGE) --incremental
+	docker run --rm -it -p 8080:8080 $(APP_IMAGE)
 
 .PHONY: test-with-runtime
 test-with-runtime: builder runtime

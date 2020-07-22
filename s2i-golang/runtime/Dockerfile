@@ -1,8 +1,9 @@
 # s2i-golang-runtime
 FROM centos:7
 
-# the maintainer
+      # the maintainer
 LABEL maintainer="Javier Romero <root@jromero.codes>" \
+      # specify where s2i scripts are located
       io.openshift.s2i.scripts-url="image:///usr/libexec/s2i/bin"
 
 # s2i scripts

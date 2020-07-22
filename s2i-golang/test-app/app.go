@@ -26,6 +26,8 @@ func main() {
 		_, _ = fmt.Fprintf(w, "Hello %v!\n", vars["object"])
 	})
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}
 	log.Println("Shutting down")
 }

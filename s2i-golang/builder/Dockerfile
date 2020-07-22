@@ -1,8 +1,9 @@
 # s2i-golang
 FROM openshift/base-centos7
 
-# the maintainer
+      # the maintainer
 LABEL maintainer="Javier Romero <root@jromero.codes>" \
+      # specify where s2i scripts are located
       io.openshift.s2i.scripts-url="image:///usr/libexec/s2i/bin"
 
 # configuration
@@ -21,7 +22,7 @@ RUN curl -sSL https://dl.google.com/go/go1.14.linux-amd64.tar.gz -o go${GO_VERSI
     rm -f go${GO_VERSION}.linux-amd64.tar.gz && \
     mkdir -p ${GOPATH}
 
-# copy the S2I scripts to /usr/libexec/s2i
+# s2i scripts
 COPY s2i /usr/libexec/s2i
 
 # set permissions
