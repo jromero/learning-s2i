@@ -1,0 +1,39 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 's2i-golang' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+# If the 's2i-golang' assemble script is executed with the '-h' flag, print the usage.
+if [[ "$1" == "-h" ]]; then
+	exec /usr/libexec/s2i/usage
+fi
+
+# Restore artifacts from the previous build (if they exist).
+echo
+echo "---> Checking for cache..."
+if [ "$(ls /tmp/artifacts 2>/dev/null)" ]; then
+  pushd /tmp/artifacts >/dev/null
+  echo "-----> Pulling cache..."
+  shopt -s dotglob
+  if [ -d src ]; then
+    echo "Restoring cache ${GOPATH}/src/..."
+    mv src ${GOPATH}/src
+  fi
+  if [ -d pkg ]; then
+    echo "Restoring cache ${GOPATH}/pkg/..."
+    mv pkg ${GOPATH}/pkg 
+  fi
+  shopt -u dotglob
+  popd >/dev/null
+fi
+
+# Compile app to final location
+echo
+echo "---> Building application from source..."
+pushd /tmp/src/ >/dev/null
+go build -o ${APP_ROOT}/bin/app
+popd >/dev/null
